@@ -50,7 +50,7 @@ meeting_for_print = {1: 'Topic',
                      4: 'Start time',
                      5: 'End time'}
 
-database = 'C:/Users/zvrva/OneDrive/Рабочий стол/UTMN/БД/Лабораторная 6/Students_DB'
+database = 'путь_к_файлу'
 
 con = sq3.connect(database, timeout=5.0, detect_types=0,
                   isolation_level='DEFERRED', check_same_thread=True,
