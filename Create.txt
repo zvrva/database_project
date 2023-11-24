@@ -1,0 +1,50 @@
+DROP TABLE IF EXISTS Student;
+
+CREATE TABLE IF NOT EXISTS Student (
+	students_name TEXT(30) NOT NULL,
+	students_surname TEXT(30) NOT NULL,
+	students_patronymic TEXT(30),
+	students_age INTEGER NOT NULL CHECK(students_age > 0 AND students_age < 100),
+	students_institute TEXT(200) NOT NULL,
+	students_programme_type TEXT(200) NOT NULL,
+	students_gradebook_number INTEGER UNIQUE NOT NULL CHECK(students_gradebook_number >= 100000 AND students_gradebook_number <= 999999),
+	students_mail TEXT(28) UNIQUE NOT NULL,
+	students_phone_number TEXT(12) UNIQUE NOT NULL,
+	students_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	CONSTRAINT Student_FK FOREIGN KEY (students_id) REFERENCES Course(courses_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS Teacher;
+
+CREATE TABLE IF NOT EXISTS Teacher (
+	teachers_name TEXT(30) NOT NULL,
+	teachers_surname TEXT(30) NOT NULL,
+	teachers_patronymic TEXT(30) NOT NULL,
+	teachers_institute TEXT(200) NOT NULL,
+	teachers_department TEXT(200) NOT NULL,
+	teachers_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	CONSTRAINT Teacher_FK FOREIGN KEY (teachers_id) REFERENCES Course(courses_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS Course;
+
+CREATE TABLE IF NOT EXISTS Course (
+	courses_name TEXT(200) UNIQUE NOT NULL,
+	courses_description TEXT(1000) UNIQUE NOT NULL,
+	courses_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	CONSTRAINT Course_FK FOREIGN KEY (courses_id) REFERENCES Teacher(students_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT Course_FK_1 FOREIGN KEY (courses_id) REFERENCES Teacher(teachers_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT Course_FK_2 FOREIGN KEY (courses_id) REFERENCES Meeting(meetings_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS Meeting;
+
+CREATE TABLE IF NOT EXISTS Meeting (
+	meetings_topic TEXT(200) NOT NULL,
+	meetings_house TEXT(6) NOT NULL,
+	meetings_room TEXT(4) NOT NULL,
+	meetings_start_time NUMERIC(5) NOT NULL,
+	meetings_end_time NUMERIC(5) NOT NULL,
+	meetings_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	CONSTRAINT Meeting_FK FOREIGN KEY (meetings_id) REFERENCES Course(courses_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
